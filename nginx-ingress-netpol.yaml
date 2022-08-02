@@ -1,0 +1,20 @@
+apiVersion: crd.projectcalico.org/v1
+kind: GlobalNetworkPolicy
+metadata:
+  name: allow-ingress
+spec:
+  order: 10
+  selector: app == 'web'
+  types:
+  - Ingress
+  - Egress
+  ingress:
+  - action: Allow
+    protocol: TCP
+    source:
+      selector: app.kubernetes.io/name == 'ingress-nginx'
+  egress:
+  - action: Allow
+    protocol: TCP
+    source:
+      selector: app.kubernetes.io/name == 'ingress-nginx'
