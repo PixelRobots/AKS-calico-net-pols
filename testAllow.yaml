@@ -1,0 +1,27 @@
+apiVersion: crd.projectcalico.org/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-busybox-egress
+  namespace: app1
+spec:
+  selector: run == 'curl-7780'
+  types:
+  - Egress
+  egress:
+  - action: Allow
+    destination:
+      selector: app == 'web'
+---
+apiVersion: crd.projectcalico.org/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-nginx-ingress
+  namespace: app1
+spec:
+  selector: app == 'web'
+  types:
+  - Ingress
+  ingress:
+  - action: Allow
+    source:
+      selector: run == 'curl-7780'
